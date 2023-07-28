@@ -19,12 +19,13 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> getMyMemberInfo() {
         MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
+        System.out.println(myInfoBySecurity.getEmail());
         System.out.println(myInfoBySecurity.getUserName());
         return ResponseEntity.ok((myInfoBySecurity));
         // return ResponseEntity.ok(memberService.getMyInfoBySecurity());
     }
 
-    @PostMapping("/ueseName")
+    @PostMapping("/username")
     public ResponseEntity<MemberResponseDto> setMemberUserName(@RequestBody MemberRequestDto request) {
         return ResponseEntity.ok(memberService.changeMemberUserName(request.getEmail(), request.getUserName()));
     }
