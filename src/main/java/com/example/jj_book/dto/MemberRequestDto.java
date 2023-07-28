@@ -28,7 +28,6 @@ public class MemberRequestDto {
     private String password;
 
     @NotBlank(message = "이름을 입력해주세요.")
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣]{2,10}$", message = "이름은 2~10자리여야 합니다.")
     private String userName;
 
     @NotBlank(message = "주소를 입력해주세요.")
