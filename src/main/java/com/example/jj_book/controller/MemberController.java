@@ -1,9 +1,11 @@
 package com.example.jj_book.controller;
 
 
+import com.example.jj_book.dto.AddressRequestDto;
 import com.example.jj_book.dto.ChangePasswordRequestDto;
 import com.example.jj_book.dto.MemberRequestDto;
 import com.example.jj_book.dto.MemberResponseDto;
+import com.example.jj_book.service.AddressService;
 import com.example.jj_book.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final AddressService addressService;
 
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> getMyMemberInfo() {
@@ -22,9 +25,8 @@ public class MemberController {
 
         System.out.println("getUserName : "+myInfoBySecurity.getUserName());
         System.out.println("getEmail : "+myInfoBySecurity.getEmail());
-        System.out.println("getPhone : "+myInfoBySecurity.getPhone());
-        System.out.println("getGrade : "+myInfoBySecurity.getGrade());
-        System.out.println("getAddress : "+myInfoBySecurity.getAddress());
+        System.out.println("getUserName : "+myInfoBySecurity.getPhone());
+        System.out.println("getUserName : "+myInfoBySecurity.getGrade());
 
         return ResponseEntity.ok((myInfoBySecurity));
     }
@@ -37,5 +39,11 @@ public class MemberController {
     @PostMapping("/password")
     public ResponseEntity<MemberResponseDto> setMemberPassword(@RequestBody ChangePasswordRequestDto request) {
         return ResponseEntity.ok(memberService.changeMemberPassword(request.getExPassword(), request.getNewPassword()));
+    }
+
+    @PostMapping("/addressreg")
+    public ResponseEntity<?> addressreg(@RequestBody AddressRequestDto addressRequestDto) {
+
+        return ResponseEntity.ok((addressService.save(addressRequestDto)));
     }
 }

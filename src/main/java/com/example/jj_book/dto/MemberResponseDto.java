@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class MemberResponseDto {
     private String email;
     private String userName;
-    private String address;
     private String phone;
     private String grade;
 
@@ -21,7 +20,6 @@ public class MemberResponseDto {
         return MemberResponseDto.builder()
                 .email(member.getEmail())
                 .userName(member.getUserName())
-                .address(member.getAddress())
                 .phone(member.getPhone())
                 .grade(member.getGrade())
                 .build();

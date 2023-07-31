@@ -30,7 +30,10 @@ public class MemberRequestDto {
     private String userName;
 
     @NotBlank(message = "주소를 입력해주세요.")
-    private String address;
+    private String address1;
+
+    @NotBlank(message = "상세 주소를 입력해주세요.")
+    private String address2;
 
     @NotBlank(message = "핸드폰 번호를 입력해주세요.")
     private String phone;
@@ -38,8 +41,9 @@ public class MemberRequestDto {
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .email(email)
-                .address(address)
                 .phone(phone)
+                .address1(address1)
+                .address2(address2)
                 .password(passwordEncoder.encode(password))
                 .userName(userName)
                 .role(Role.ROLE_USER)

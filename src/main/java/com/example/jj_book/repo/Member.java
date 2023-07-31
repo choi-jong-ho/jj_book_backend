@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "USER")
+@DynamicInsert
 @NoArgsConstructor
 public class Member {
 
@@ -29,9 +31,6 @@ public class Member {
 
     @Column(name = "email",nullable = false, unique = true)
     private String email;
-
-    @Column(name = "address",nullable = false)
-    private String address;
 
     @Column(name = "phone",nullable = false)
     private String phone;
@@ -50,6 +49,11 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Transient
+    private String address1;
+    @Transient
+    private String address2;
+
     public void setUserName(String userName){
         this.userName = userName;
     }
@@ -59,13 +63,14 @@ public class Member {
     }
 
     @Builder
-    public Member(Long id, String userName, String password, String email, String address, String phone, String grade, LocalDateTime regDt, LocalDateTime upDt, Role role){
+    public Member(Long id, String userName, String password, String email,  String phone, String address1, String address2, String grade, LocalDateTime regDt, LocalDateTime upDt, Role role){
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.email = email;
-        this.address = address;
         this.phone = phone;
+        this.address1 = address1;
+        this.address2 = address2;
         this.grade = grade;
         this.regDt = regDt;
         this.upDt = upDt;
