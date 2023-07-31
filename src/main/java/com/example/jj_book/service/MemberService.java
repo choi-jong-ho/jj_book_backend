@@ -24,7 +24,7 @@ public class MemberService {
 
     @Transactional
     public MemberResponseDto changeMemberUserName(String email, String userName) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
+        Member member = memberRepository.findByEmail(email, "Y").orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
         member.setUserName(userName);
         return MemberResponseDto.of(memberRepository.save(member));
     }

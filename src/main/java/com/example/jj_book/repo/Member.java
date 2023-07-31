@@ -3,8 +3,11 @@ package com.example.jj_book.repo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -33,6 +36,17 @@ public class Member {
     @Column(name = "phone",nullable = false)
     private String phone;
 
+    @Column(name = "grade",nullable = false)
+    private String grade;
+
+    @CreationTimestamp
+    @Column(name = "reg_dt")
+    private LocalDateTime regDt;
+
+    @UpdateTimestamp
+    @Column(name = "up_dt")
+    private LocalDateTime upDt;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -45,13 +59,16 @@ public class Member {
     }
 
     @Builder
-    public Member(Long id, String userName, String password, String email, String address, String phone, Role role){
+    public Member(Long id, String userName, String password, String email, String address, String phone, String grade, LocalDateTime regDt, LocalDateTime upDt, Role role){
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.address = address;
         this.phone = phone;
+        this.grade = grade;
+        this.regDt = regDt;
+        this.upDt = upDt;
         this.role = role;
     }
 }
