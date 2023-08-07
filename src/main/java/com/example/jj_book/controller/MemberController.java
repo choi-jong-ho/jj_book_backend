@@ -1,15 +1,19 @@
 package com.example.jj_book.controller;
 
-
-import com.example.jj_book.dto.AddressRequestDto;
-import com.example.jj_book.dto.ChangePasswordRequestDto;
-import com.example.jj_book.dto.MemberRequestDto;
-import com.example.jj_book.dto.MemberResponseDto;
-import com.example.jj_book.service.AddressService;
+import com.example.jj_book.dto.MemberFormDto;
+import com.example.jj_book.entity.Member;
 import com.example.jj_book.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,33 +21,20 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-    private final AddressService addressService;
+    private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/me")
-    public ResponseEntity<MemberResponseDto> getMyMemberInfo() {
-        MemberResponseDto myInfoBySecurity = memberService.getMyInfoBySecurity();
+    @PostMapping(value = "/signup")
+    public ResponseEntity singUp(@RequestBody @Valid MemberFormDto memberFormDto, BindingResult bindingResult){
 
-        System.out.println("getUserName : "+myInfoBySecurity.getUserName());
-        System.out.println("getEmail : "+myInfoBySecurity.getEmail());
-        System.out.println("getUserName : "+myInfoBySecurity.getPhone());
-        System.out.println("getUserName : "+myInfoBySecurity.getGrade());
+        System.out.println("MemberFormDto" + memberFormDto.getEmail());
 
-        return ResponseEntity.ok((myInfoBySecurity));
-    }
+        if (bindingResult.hasErrors()){
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
+        }
 
-    @PostMapping("/username")
-    public ResponseEntity<MemberResponseDto> setMemberUserName(@RequestBody MemberRequestDto request) {
-        return ResponseEntity.ok(memberService.changeMemberUserName(request.getEmail(), request.getUserName()));
-    }
+        Member member = Member.createMember(memberFormDto, passwordEncoder);
+        memberService.saveMember(member);
 
-    @PostMapping("/password")
-    public ResponseEntity<MemberResponseDto> setMemberPassword(@RequestBody ChangePasswordRequestDto request) {
-        return ResponseEntity.ok(memberService.changeMemberPassword(request.getExPassword(), request.getNewPassword()));
-    }
-
-    @PostMapping("/addressreg")
-    public ResponseEntity<?> addressreg(@RequestBody AddressRequestDto addressRequestDto) {
-
-        return ResponseEntity.ok((addressService.save(addressRequestDto)));
+        return ResponseEntity.ok(member);
     }
 }

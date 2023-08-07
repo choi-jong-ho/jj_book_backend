@@ -1,41 +1,50 @@
 package com.example.jj_book.service;
 
-import com.example.jj_book.config.SecurityUtil;
-import com.example.jj_book.dto.MemberResponseDto;
-import com.example.jj_book.repo.Member;
+import com.example.jj_book.entity.Member;
 import com.example.jj_book.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class MemberService {
+public class MemberService implements UserDetailsService {
+
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public MemberResponseDto getMyInfoBySecurity() {
-        return memberRepository.findById(SecurityUtil.getCurrentMemberId())
-                .map(MemberResponseDto::of)
-                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
+    public Member saveMember(Member member){
+        validateDuplicateMember(member);
+        return memberRepository.save(member);
     }
 
-    @Transactional
-    public MemberResponseDto changeMemberUserName(String email, String userName) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
-        member.setUserName(userName);
-        return MemberResponseDto.of(memberRepository.save(member));
-    }
-
-    @Transactional
-    public MemberResponseDto changeMemberPassword(String exPassword, String newPassword) {
-        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다"));
-        if (!passwordEncoder.matches(exPassword, member.getPassword())) {
-            throw new RuntimeException("비밀번호가 맞지 않습니다");
+    private void validateDuplicateMember(Member member){
+        Member findMember = memberRepository.findByEmail(member.getEmail());
+        if(findMember != null){
+            throw new IllegalStateException("이미 가입된 회원입니다.");
         }
-        member.setPassword(passwordEncoder.encode((newPassword)));
-        return MemberResponseDto.of(memberRepository.save(member));
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        System.out.println("email : "+email);
+
+        Member member = memberRepository.findByEmail(email);
+
+        if(member == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        return User.builder()
+                .username(member.getEmail())
+                .password(member.getPassword())
+                .roles(member.getRole().toString())
+                .build();
+    }
+
 }
