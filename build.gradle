@@ -42,6 +42,9 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    //MODEL MAPPER
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'
+
     // 3. querydsl dependencies 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"

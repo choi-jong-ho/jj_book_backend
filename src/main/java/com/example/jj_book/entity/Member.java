@@ -9,7 +9,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "member")
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @DynamicInsert
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @Column(name = "member_id")
@@ -38,12 +37,6 @@ public class Member {
 
     @Column(name = "use_yn", columnDefinition = "char(1) default 'Y'")
     private String useYn;
-
-    @Column(name = "reg_dt", columnDefinition = "datetime default NOW()")
-    private LocalDateTime regDt;
-
-    @Column(name = "up_dt", columnDefinition = "datetime default NOW()")
-    private LocalDateTime upDt;
 
     @Enumerated(EnumType.STRING)
     private Role role;
