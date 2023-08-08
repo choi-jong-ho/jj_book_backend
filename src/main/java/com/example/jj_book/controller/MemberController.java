@@ -4,14 +4,12 @@ import com.example.jj_book.dto.MemberFormDto;
 import com.example.jj_book.entity.Member;
 import com.example.jj_book.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -21,7 +19,8 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PostMapping(value = "/signup")
     public ResponseEntity singUp(@RequestBody @Valid MemberFormDto memberFormDto, BindingResult bindingResult){
@@ -36,5 +35,17 @@ public class MemberController {
         memberService.saveMember(member);
 
         return ResponseEntity.ok(member);
+    }
+
+    @GetMapping(value = "/login/error")
+    public String error(@RequestParam(value = "error")String error, @RequestParam(value = "exception") String exception){
+
+        String error1 = error;
+        String exception1 = exception;
+
+        System.out.println("error : "+ error1);
+        System.out.println("exception : "+ exception1);
+
+        return exception1;
     }
 }

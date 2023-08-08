@@ -20,29 +20,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     MemberService memberService;
 
+    @Autowired
+    AuthSuccessHandler authSuccessHandler;
+
+    @Autowired
+    AuthenticationFailureHandler authenticationFailureHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+
         http.formLogin()
                 .loginPage("/member/login")
-                .defaultSuccessUrl("/")
                 .usernameParameter("email")
+                .defaultSuccessUrl("/")
                 .failureUrl("/member/login/error")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                .logoutSuccessUrl("/")
-        ;
+                .logoutSuccessUrl("/");
 
         http.authorizeRequests()
                 .mvcMatchers("/**", "/member/**", "/item/**", "/images/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-        ;
+                .anyRequest().authenticated();
 
         http.exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-        ;
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
     }
 
     @Bean
