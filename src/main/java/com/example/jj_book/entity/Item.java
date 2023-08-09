@@ -1,6 +1,7 @@
 package com.example.jj_book.entity;
 
 import com.example.jj_book.constant.ItemSellStatus;
+import com.example.jj_book.dto.ItemFormDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -40,5 +41,12 @@ public class Item extends BaseEntity {
 
     private LocalDateTime upTime;
 
+    public void updateItem(ItemFormDto itemFormDto){
+        this.itemNm = itemFormDto.getItemNm();
+        this.price = itemFormDto.getPrice();
+        this.stockNumber = itemFormDto.getStockNumber();
+        this.itemDetail = itemFormDto.getItemDetail();
+        this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
 
 }

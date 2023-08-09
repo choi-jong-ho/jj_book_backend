@@ -28,8 +28,10 @@ public class ItemImgService {
         String imgName = "";
         String imgUrl = "";
 
+        System.out.println("123"+oriImgName);
         //파일 업로드
         if(!StringUtils.isEmpty(oriImgName)){
+            System.out.println("1234"+oriImgName);
             imgName = fileService.uploadFile(itemImgLocation, oriImgName,
                     itemImgFile.getBytes());
             imgUrl = "/images/item/" + imgName;
