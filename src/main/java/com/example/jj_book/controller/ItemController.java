@@ -10,12 +10,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +62,14 @@ public class ItemController {
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
+        System.out.println("getId : " + itemFormDto.getId());
+        System.out.println("getItemNm : " + itemFormDto.getItemNm());
+        System.out.println("getItemDetail : " + itemFormDto.getItemDetail());
+        System.out.println("getItemSellStatus : " + itemFormDto.getItemSellStatus());
+        System.out.println("getPrice : " + itemFormDto.getPrice());
+        System.out.println("getStockNumber : " + itemFormDto.getStockNumber());
+        System.out.println("itemImgFileList.size : " + itemImgFileList.size());
+
 
         try {
             itemService.updateItem(itemFormDto, itemImgFileList);
@@ -72,18 +80,17 @@ public class ItemController {
     }
 
     @GetMapping(value = {"/item/list", "/items/{page}"})
-    public String itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+    public List<Page> itemManage(@RequestBody ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
         Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
 
-        model.addAttribute("items", items);
-        model.addAttribute("itemSearchDto", itemSearchDto);
-        model.addAttribute("maxPage", 5);
+        List<Page> list = new ArrayList<>();
+        list.add(items);
 
-        return "item/itemMng";
+        return list;
     }
-//
+
 //    @GetMapping(value = "/item/{itemId}")
 //    public ResponseEntity itemDtl(@RequestBody Item item){
 //        ItemFormDto itemFormDto = itemService.getItemDtl(item.getId());

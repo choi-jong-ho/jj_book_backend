@@ -44,6 +44,8 @@ public class ItemImgService {
 
     public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception{
         if(!itemImgFile.isEmpty()){
+            System.out.println("in");
+            System.out.println("itemImgId : "+itemImgId);
             ItemImg savedItemImg = itemImgRepository.findById(itemImgId)
                     .orElseThrow(EntityNotFoundException::new);
 
