@@ -25,8 +25,6 @@ public class MemberController {
     @PostMapping(value = "/signup")
     public ResponseEntity singUp(@RequestBody @Valid MemberFormDto memberFormDto, BindingResult bindingResult){
 
-        System.out.println("MemberFormDto" + memberFormDto.getEmail());
-
         if (bindingResult.hasErrors()){
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }

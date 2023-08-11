@@ -35,8 +35,6 @@ public class ItemController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
 
-        System.out.println("이미지 : "+ itemImgFileList.get(0).getOriginalFilename());
-
         try {
             itemService.saveItem(itemFormDto, itemImgFileList);
         } catch (Exception e){
@@ -49,8 +47,6 @@ public class ItemController {
     @GetMapping(value = "/item/{itemId}")
     public ResponseEntity itemDtl(@PathVariable("itemId") Long itemId){
 
-        System.out.println("itemId" + itemId);
-
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
 
         return ResponseEntity.ok(itemFormDto);
@@ -62,14 +58,6 @@ public class ItemController {
         if(bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
-        System.out.println("getId : " + itemFormDto.getId());
-        System.out.println("getItemNm : " + itemFormDto.getItemNm());
-        System.out.println("getItemDetail : " + itemFormDto.getItemDetail());
-        System.out.println("getItemSellStatus : " + itemFormDto.getItemSellStatus());
-        System.out.println("getPrice : " + itemFormDto.getPrice());
-        System.out.println("getStockNumber : " + itemFormDto.getStockNumber());
-        System.out.println("itemImgFileList.size : " + itemImgFileList.size());
-
 
         try {
             itemService.updateItem(itemFormDto, itemImgFileList);
@@ -79,8 +67,8 @@ public class ItemController {
         return ResponseEntity.ok(itemFormDto);
     }
 
-    @GetMapping(value = {"/item/list", "/items/{page}"})
-    public List<Page> itemManage(@RequestBody ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page){
+    @GetMapping(value = {"/item/list", "/item/list/{page}"})
+    public List<Page> itemManage(ItemSearchDto itemSearchDto, @PathVariable("page") Optional<Integer> page){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
         Page<Item> items = itemService.getAdminItemPage(itemSearchDto, pageable);
