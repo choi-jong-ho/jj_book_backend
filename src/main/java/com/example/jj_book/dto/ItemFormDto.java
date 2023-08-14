@@ -31,6 +31,8 @@ public class ItemFormDto {
 
     private ItemSellStatus itemSellStatus;
 
+    private String useYn;
+
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>();
 
     private List<Long> itemImgIds = new ArrayList<>();

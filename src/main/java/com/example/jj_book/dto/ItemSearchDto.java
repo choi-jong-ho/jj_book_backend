@@ -20,4 +20,7 @@ public class ItemSearchDto {
 
     // 조회할 검색어 저장할 변수
     private String searchQuery = "";
+
+    // 사용 여부
+    private String searchByUseYn;
 }

@@ -51,6 +51,13 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
         return null;
     }
 
+    private BooleanExpression searchByUse(String useYn){
+        if (useYn.equals("N")){
+            return QItem.item.useYn.eq(useYn);
+        }
+        return QItem.item.useYn.eq(useYn);
+    }
+
     @Override
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
         // https://toongri.tistory.com/62
@@ -59,7 +66,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .selectFrom(QItem.item)
                 .where(regDtsAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()))
+                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()),
+                        searchByUse(itemSearchDto.getSearchByUseYn()))
                 .orderBy(QItem.item.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -69,7 +77,8 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
                 .selectFrom(QItem.item)
                 .where(regDtsAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
-                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()));
+                        searchByLike(itemSearchDto.getSearchBy(), itemSearchDto.getSearchQuery()),
+                        searchByUse(itemSearchDto.getSearchByUseYn()));
 
         return PageableExecutionUtils.getPage(fetch, pageable, ()-> count.fetch().size());
     }

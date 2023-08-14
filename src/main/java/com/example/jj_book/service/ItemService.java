@@ -73,14 +73,34 @@ public class ItemService {
                 .orElseThrow(EntityNotFoundException::new);
         item.updateItem(itemFormDto);
 
+        System.out.println("getItemNm" + itemFormDto.getItemNm());
+        System.out.println("getItemDetail" + itemFormDto.getItemDetail());
+        System.out.println("getItemSellStatus" + itemFormDto.getItemSellStatus());
+        System.out.println("getPrice" + itemFormDto.getPrice());
+        System.out.println("getStockNumber" + itemFormDto.getStockNumber());
+        System.out.println("getId" + itemFormDto.getId());
+
+
         List<Long> itemImgIds = itemFormDto.getItemImgIds();
 
         //이미지 등록
         for(int i=0;i<itemImgFileList.size();i++){
 
+            System.out.println("getOriginalFilename" + itemImgFileList.get(i).getOriginalFilename());
+
             itemImgService.updateItemImg(itemImgIds.get(i),
                     itemImgFileList.get(i));
         }
+
+        return item.getId();
+    }
+
+    public Long deleteItem(ItemFormDto itemFormDto) throws Exception{
+
+        //상품 삭제
+        Item item = itemRepository.findById(itemFormDto.getId())
+                .orElseThrow(EntityNotFoundException::new);
+        item.deleteItem(itemFormDto);
 
         return item.getId();
     }

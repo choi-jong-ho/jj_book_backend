@@ -36,12 +36,19 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;
 
+    @Column(name = "use_yn", columnDefinition = "char(1) default 'Y'")
+    private String useYn;
+
     public void updateItem(ItemFormDto itemFormDto){
         this.itemNm = itemFormDto.getItemNm();
         this.price = itemFormDto.getPrice();
         this.stockNumber = itemFormDto.getStockNumber();
         this.itemDetail = itemFormDto.getItemDetail();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
+    }
+
+    public void deleteItem(ItemFormDto itemFormDto){
+        this.useYn = itemFormDto.getUseYn();
     }
 
 }
