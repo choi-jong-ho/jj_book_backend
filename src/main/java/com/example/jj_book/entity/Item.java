@@ -2,6 +2,7 @@ package com.example.jj_book.entity;
 
 import com.example.jj_book.constant.ItemSellStatus;
 import com.example.jj_book.dto.ItemFormDto;
+import com.example.jj_book.exception.OutOfStockException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -49,6 +50,14 @@ public class Item extends BaseEntity {
 
     public void deleteItem(ItemFormDto itemFormDto){
         this.useYn = itemFormDto.getUseYn();
+    }
+
+    public void removeStock(int stockNumber){
+        int restStock = this.stockNumber - stockNumber;
+        if(restStock < 0){
+            throw new OutOfStockException("상품의 재고가 부족합니다. (현재 재고 수량 : " + this.stockNumber + ")");
+        }
+        this.stockNumber = restStock;
     }
 
 }
