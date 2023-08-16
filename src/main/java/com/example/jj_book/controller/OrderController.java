@@ -20,12 +20,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping(value = "/order")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping(value = "/order")
+    @PostMapping(value = "/new")
     public @ResponseBody ResponseEntity order(@RequestBody @Valid OrderDto orderDto
             , BindingResult bindingResult, Principal principal) {
 
@@ -58,7 +59,7 @@ public class OrderController {
     }
 
     //구매 이력 조회
-    @GetMapping(value = {"/order/list", "/order/list/{page}"})
+    @GetMapping(value = {"/list", "/list/{page}"})
     public List<Page> orderHist(@PathVariable("page") Optional<Integer> page, Principal principal){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
@@ -70,4 +71,13 @@ public class OrderController {
         return list;
     }
 
+    @PostMapping("/{orderId}/cancel")
+    public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId, Principal principal){
+        if(!orderService.validateOrder(orderId, principal.getName())){
+            return new ResponseEntity<String>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+
+        orderService.cancelOrder(orderId);
+        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+    }
 }
