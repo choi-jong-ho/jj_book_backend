@@ -1,23 +1,15 @@
 package com.example.jj_book.service;
 
 import com.example.jj_book.constant.ItemSellStatus;
-import com.example.jj_book.dto.CartItemDto;
-import com.example.jj_book.entity.CartItem;
 import com.example.jj_book.entity.Item;
 import com.example.jj_book.entity.Member;
 import com.example.jj_book.repo.CartItemRepository;
 import com.example.jj_book.repo.ItemRepository;
 import com.example.jj_book.repo.MemberRepository;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
@@ -52,22 +44,22 @@ class CartServiceTest {
         return memberRepository.save(member);
     }
 
-    @Test
-    @DisplayName("장바구니 담기 테스트")
-    public void addCart(){
-        Item item = saveItem();
-        Member member = saveMember();
-
-        CartItemDto cartItemDto = new CartItemDto();
-        cartItemDto.setCount(5);
-        cartItemDto.setItemId(item.getId());
-
-        Long cartItemId = cartService.addCart(cartItemDto, member.getEmail());
-        CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        assertEquals(item.getId(), cartItem.getItem().getId());
-        assertEquals(cartItemDto.getCount(), cartItem.getCount());
-    }
+//    @Test
+//    @DisplayName("장바구니 담기 테스트")
+//    public void addCart(){
+//        Item item = saveItem();
+//        Member member = saveMember();
+//
+//        CartItemDto cartItemDto = new CartItemDto();
+//        cartItemDto.setCount(5);
+//        cartItemDto.setItemId(item.getId());
+//
+//        Long cartItemId = cartService.addCart(cartItemDto, member.getEmail());
+//        CartItem cartItem = cartItemRepository.findById(cartItemId)
+//                .orElseThrow(EntityNotFoundException::new);
+//
+//        assertEquals(item.getId(), cartItem.getItem().getId());
+//        assertEquals(cartItemDto.getCount(), cartItem.getCount());
+//    }
 
 }

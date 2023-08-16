@@ -1,19 +1,19 @@
 package com.example.jj_book.service;
 
+import com.example.jj_book.dto.CartHistDto;
 import com.example.jj_book.dto.CartItemDto;
-import com.example.jj_book.entity.Cart;
-import com.example.jj_book.entity.CartItem;
-import com.example.jj_book.entity.Item;
-import com.example.jj_book.entity.Member;
-import com.example.jj_book.repo.CartItemRepository;
-import com.example.jj_book.repo.CartRepository;
-import com.example.jj_book.repo.ItemRepository;
-import com.example.jj_book.repo.MemberRepository;
+import com.example.jj_book.entity.*;
+import com.example.jj_book.repo.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final ItemImgRepository itemImgRepository;
 
     public Long addCart(CartItemDto cartItemDto, String email) {
 
@@ -49,17 +50,30 @@ public class CartService {
         }
     }
 
-//    @Transactional(readOnly = true)
-//    public List<CartDetailDto> getCartList(String email){
-//        List<CartDetailDto> cartDetailDtoList = new ArrayList<CartDetailDto>();
-//
-//        Member member = memberRepository.findByEmail(email);
-//        Cart cart = cartRepository.findByMemberId(member.getId());
-//        if(cart == null){
-//            return cartDetailDtoList;
-//        }
-//
-//        cartDetailDtoList = cartItemRepository.findCartDetailDtoList(cart.getId());
-//        return cartDetailDtoList;
-//    }
+    @Transactional(readOnly = true)
+    public Page<CartHistDto> getCartList(String email, Pageable pageable){
+
+        Member member = memberRepository.findByEmail(email);
+        List<Cart> carts = cartRepository.findCarts(member.getId(), pageable);
+        Long totalCount = cartRepository.countCart(member.getId());
+
+
+        List<CartHistDto> cartHistDtoList = new ArrayList<>();
+
+        //주문 리스트 순회 -> 구매 이력페이지에 전달
+        for(Cart cart : carts) {
+            CartHistDto cartHistDto = new CartHistDto(cart);
+            List<CartItem> cartItems = cart.getCartItems();
+            for(CartItem cartItem : cartItems){
+                ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(cartItem.getItem().getId(), "Y");
+                CartItemDto cartItemDto = new CartItemDto(cartItem, itemImg.getImgUrl());
+                cartHistDto.addCartItemDto(cartItemDto);
+            }
+
+            cartHistDtoList.add(cartHistDto);
+        }
+
+        return new PageImpl<CartHistDto>(cartHistDtoList, pageable, totalCount);
+    }
+
 }

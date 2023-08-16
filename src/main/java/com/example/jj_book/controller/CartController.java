@@ -1,17 +1,26 @@
 package com.example.jj_book.controller;
 
+import com.example.jj_book.dto.CartDetailDto;
+import com.example.jj_book.dto.CartHistDto;
 import com.example.jj_book.dto.CartItemDto;
+import com.example.jj_book.dto.OrderHistDto;
 import com.example.jj_book.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/cart")
@@ -44,10 +53,18 @@ public class CartController {
         return new ResponseEntity<Long>(cartItemid, HttpStatus.OK);
     }
 
-//    @GetMapping(value = "/list")
-//    public String orderHist(Principal principal, Model model){
-//        List<CartDetailDto> cartDetailList = cartService.getCartList(principal.getName());
-//        model.addAttribute("cartItems", cartDetailList);
-//        return "cart/cartList";
-//    }
+    @GetMapping(value = {"/list","/list/{page}"})
+    public List<Page> cartHist(@PathVariable("page") Optional<Integer> page, Principal principal){
+
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<CartHistDto> cartHistDtoList = cartService.getCartList(principal.getName(), pageable);
+
+        List<Page> list = new ArrayList<>();
+        list.add(cartHistDtoList);
+
+        return list;
+    }
+
+
+
 }
