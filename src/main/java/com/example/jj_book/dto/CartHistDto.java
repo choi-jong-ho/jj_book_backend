@@ -1,11 +1,15 @@
 package com.example.jj_book.dto;
 
 import com.example.jj_book.entity.Cart;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class CartHistDto {
 
     public CartHistDto(Cart cart){

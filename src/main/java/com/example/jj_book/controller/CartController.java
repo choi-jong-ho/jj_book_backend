@@ -1,9 +1,7 @@
 package com.example.jj_book.controller;
 
-import com.example.jj_book.dto.CartDetailDto;
 import com.example.jj_book.dto.CartHistDto;
 import com.example.jj_book.dto.CartItemDto;
-import com.example.jj_book.dto.OrderHistDto;
 import com.example.jj_book.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +27,7 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping(value = "/new")
-    public @ResponseBody ResponseEntity order(@RequestBody @Valid CartItemDto cartItemDto
+    public @ResponseBody ResponseEntity cart(@RequestBody @Valid CartItemDto cartItemDto
             , BindingResult bindingResult, Principal principal) {
 
         if(bindingResult.hasErrors()){

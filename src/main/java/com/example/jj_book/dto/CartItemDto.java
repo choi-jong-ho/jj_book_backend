@@ -2,6 +2,7 @@ package com.example.jj_book.dto;
 
 import com.example.jj_book.entity.CartItem;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Min;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class CartItemDto {
 
     @NotNull(message = "상품 아이디는 필수 입력 값입니다.")
