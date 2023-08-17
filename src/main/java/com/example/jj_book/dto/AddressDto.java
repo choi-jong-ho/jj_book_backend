@@ -11,6 +11,8 @@ public class AddressDto {
 
     private Long id;
 
+    private String addrCategory; //배송지 카테고리
+
     private String postcode; //우편변호
 
     private String address; //주소
