@@ -46,4 +46,15 @@ public class MemberController {
 
         return exception1;
     }
+
+    @PostMapping(value = "/delete")
+    public ResponseEntity memberDelete(@RequestBody MemberFormDto memberFormDto){
+
+        try {
+            memberService.deleteMemeber(memberFormDto);
+        } catch (Exception e){
+        }
+
+        return ResponseEntity.ok(memberFormDto);
+    }
 }

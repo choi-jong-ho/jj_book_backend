@@ -1,5 +1,6 @@
 package com.example.jj_book.service;
 
+import com.example.jj_book.dto.MemberFormDto;
 import com.example.jj_book.entity.Member;
 import com.example.jj_book.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class MemberService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(email);
+        Member member = memberRepository.findByEmailAndUseYn(email, "Y");
 
         if(member == null){
             throw new UsernameNotFoundException(email);
@@ -42,6 +43,20 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().toString())
                 .build();
+    }
+
+    public Long deleteMemeber(MemberFormDto memberFormDto) throws Exception{
+
+        //아이디 삭제
+        Member member = memberRepository.findByEmail(memberFormDto.getEmail());
+
+        if (member == null){
+            throw new UsernameNotFoundException(memberFormDto.getEmail());
+        }
+
+        member.deleteMember(memberFormDto);
+
+        return member.getId();
     }
 
 }

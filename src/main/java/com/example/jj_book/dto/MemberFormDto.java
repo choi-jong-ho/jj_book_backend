@@ -21,4 +21,6 @@ public class MemberFormDto {
 
     @NotBlank(message = "휴대폰번호를 입력해주세요.")
     private String phone;
+
+    private String useYn;
 }
