@@ -32,15 +32,16 @@ class MemberControllerTest {
     PasswordEncoder passwordEncoder;
 
 
-    public Member createMember(String email, String password){
+    public void createMember(String email, String password){
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setEmail(email);
         memberFormDto.setName("테스트");
         memberFormDto.setPhone("01012341234");
         memberFormDto.setPassword(password);
 
-        Member member = Member.createMember(memberFormDto, passwordEncoder);
-        return memberService.saveMember(member);
+        Member member = new Member();
+
+        memberService.saveMember(member, memberFormDto);
     }
 
     @Test
