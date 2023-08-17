@@ -23,4 +23,12 @@ public class MemberFormDto {
     private String phone;
 
     private String useYn;
+
+    private String postcode; //우편변호
+
+    private String address; //주소
+
+    private String addressDetail; //상세주소
+
+    private String repAddYn; //대표 주소 여부
 }

@@ -1,7 +1,9 @@
 package com.example.jj_book.service;
 
 import com.example.jj_book.dto.MemberFormDto;
+import com.example.jj_book.entity.Address;
 import com.example.jj_book.entity.Member;
+import com.example.jj_book.repo.AddressRepository;
 import com.example.jj_book.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -17,10 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+    private final AddressRepository addressRepository;
 
-    public Member saveMember(Member member){
+    public void saveMember(Member member, MemberFormDto memberFormDto){
         validateDuplicateMember(member);
-        return memberRepository.save(member);
+        memberRepository.save(member);
+
+        Address address = new Address();
+        address.setMember(member);
+
+        address.updateAddress(memberFormDto.getPostcode(), memberFormDto.getAddress(), memberFormDto.getAddressDetail(), memberFormDto.getRepAddYn());
+        addressRepository.save(address);
     }
 
     private void validateDuplicateMember(Member member){

@@ -12,15 +12,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController {
 
-    private final MemberService memberService;
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    private final MemberService memberService;
 
     @PostMapping(value = "/signup")
     public ResponseEntity singUp(@RequestBody @Valid MemberFormDto memberFormDto, BindingResult bindingResult){
@@ -30,9 +32,9 @@ public class MemberController {
         }
 
         Member member = Member.createMember(memberFormDto, passwordEncoder);
-        memberService.saveMember(member);
+        memberService.saveMember(member, memberFormDto);
 
-        return ResponseEntity.ok(member);
+        return ResponseEntity.ok(memberFormDto);
     }
 
     @GetMapping(value = "/login/error")
@@ -48,9 +50,10 @@ public class MemberController {
     }
 
     @PostMapping(value = "/delete")
-    public ResponseEntity memberDelete(@RequestBody MemberFormDto memberFormDto){
+    public ResponseEntity memberDelete(@RequestBody MemberFormDto memberFormDto, Principal principal){
 
         try {
+            memberFormDto.setEmail(principal.getName());
             memberService.deleteMemeber(memberFormDto);
         } catch (Exception e){
         }
