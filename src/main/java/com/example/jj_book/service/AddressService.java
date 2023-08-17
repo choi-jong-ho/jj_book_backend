@@ -26,7 +26,7 @@ public class AddressService {
         address.setMember(member);
 
         //상품 이미지 정보 저장
-        address.updateAddress(address.getAddCategory(), addressDto.getPostcode(), addressDto.getAddress(), addressDto.getAddressDetail(), addressDto.getRepAddYn());
+        address.updateAddress(address.getAddrCategory(), addressDto.getPostcode(), addressDto.getAddress(), addressDto.getAddressDetail(), addressDto.getRepAddYn());
         addressRepository.save(address);
     }
 }
