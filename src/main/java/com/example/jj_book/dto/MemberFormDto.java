@@ -24,6 +24,8 @@ public class MemberFormDto {
 
     private String useYn;
 
+    private String addrCategory; //우편변호
+
     private String postcode; //우편변호
 
     private String address; //주소

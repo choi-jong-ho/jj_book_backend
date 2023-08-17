@@ -28,7 +28,7 @@ public class MemberService implements UserDetailsService {
         Address address = new Address();
         address.setMember(member);
 
-        address.updateAddress(memberFormDto.getPostcode(), memberFormDto.getAddress(), memberFormDto.getAddressDetail(), memberFormDto.getRepAddYn());
+        address.updateAddress(memberFormDto.getAddrCategory(), memberFormDto.getPostcode(), memberFormDto.getAddress(), memberFormDto.getAddressDetail(), memberFormDto.getRepAddYn());
         addressRepository.save(address);
     }
 

@@ -23,6 +23,7 @@ public class CartItemDto {
     private String imgUrl; //상품 이미지 경로
 
     public CartItemDto(CartItem cartItem, String imgUrl) {
+        this.itemId = cartItem.getItem().getId();
         this.itemNm = cartItem.getItem().getItemNm();
         this.count = cartItem.getCount();
         this.imgUrl = imgUrl;
