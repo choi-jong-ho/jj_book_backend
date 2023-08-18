@@ -1,6 +1,6 @@
 package com.example.jj_book.service;
 
-import com.example.jj_book.dto.CartHistDto;
+import com.example.jj_book.dto.CartDetailDto;
 import com.example.jj_book.dto.CartItemDto;
 import com.example.jj_book.entity.*;
 import com.example.jj_book.repo.*;
@@ -51,29 +51,28 @@ public class CartService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CartHistDto> getCartList(String email, Pageable pageable){
+    public Page<CartDetailDto> getCartList(String email, Pageable pageable){
 
         Member member = memberRepository.findByEmail(email);
-        List<Cart> carts = cartRepository.findCarts(member.getId(), pageable);
-        Long totalCount = cartRepository.countCart(member.getId());
+        List<CartItem> cartItems = cartItemRepository.findCarts(member.getEmail(), pageable);
+        Long totalCount = cartItemRepository.countCart(member.getEmail());
 
+        System.out.println("carts : " + cartItems.size());
+        System.out.println("totalCount : " + totalCount);
 
-        List<CartHistDto> cartHistDtoList = new ArrayList<>();
+        List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
 
         //주문 리스트 순회 -> 구매 이력페이지에 전달
-        for(Cart cart : carts) {
-            CartHistDto cartHistDto = new CartHistDto(cart);
-            List<CartItem> cartItems = cart.getCartItems();
-            for(CartItem cartItem : cartItems){
-                ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(cartItem.getItem().getId(), "Y");
-                CartItemDto cartItemDto = new CartItemDto(cartItem, itemImg.getImgUrl());
-                cartHistDto.addCartItemDto(cartItemDto);
-            }
+        for(CartItem cartItem : cartItems) {
 
-            cartHistDtoList.add(cartHistDto);
+            ItemImg itemImg = itemImgRepository.findByItemIdAndRepimgYn(cartItem.getItem().getId(), "Y");
+
+            CartDetailDto cartDetailDto = new CartDetailDto(cartItem.getId(), cartItem.getItem().getItemNm(), cartItem.getItem().getPrice(), cartItem.getCount(), itemImg.getImgUrl());
+
+            cartDetailDtoList.add(cartDetailDto);
         }
 
-        return new PageImpl<CartHistDto>(cartHistDtoList, pageable, totalCount);
+        return new PageImpl<CartDetailDto>(cartDetailDtoList, pageable, totalCount);
     }
 
 }

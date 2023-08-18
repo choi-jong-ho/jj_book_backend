@@ -1,6 +1,6 @@
 package com.example.jj_book.controller;
 
-import com.example.jj_book.dto.CartHistDto;
+import com.example.jj_book.dto.CartDetailDto;
 import com.example.jj_book.dto.CartItemDto;
 import com.example.jj_book.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -54,10 +54,10 @@ public class CartController {
     public List<Page> cartHist(@PathVariable("page") Optional<Integer> page, Principal principal){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
-        Page<CartHistDto> cartHistDtoList = cartService.getCartList(principal.getName(), pageable);
+        Page<CartDetailDto> cartDetailDtoList = cartService.getCartList(principal.getName(), pageable);
 
         List<Page> list = new ArrayList<>();
-        list.add(cartHistDtoList);
+        list.add(cartDetailDtoList);
 
         return list;
     }
