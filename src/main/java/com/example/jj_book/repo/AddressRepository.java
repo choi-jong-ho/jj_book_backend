@@ -14,6 +14,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     List<Address> findAddrs(@Param("id") Long id, Pageable pageable);
 
     @Query("select count(o) from Address o where o.member.id = :id")
-    Long countCart(@Param("id") Long id);
+    Long countAddr(@Param("id") Long id);
 
 }

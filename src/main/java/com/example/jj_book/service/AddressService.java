@@ -40,7 +40,7 @@ public class AddressService {
 
         Member member = memberRepository.findByEmail(email);
         List<Address> addrs = addressRepository.findAddrs(member.getId(), pageable);
-        Long totalCount = addressRepository.countCart(member.getId());
+        Long totalCount = addressRepository.countAddr(member.getId());
 
 
         return new PageImpl<Address>(addrs, pageable, totalCount);
