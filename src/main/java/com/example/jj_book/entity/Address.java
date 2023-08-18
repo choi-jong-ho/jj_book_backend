@@ -1,5 +1,6 @@
 package com.example.jj_book.entity;
 
+import com.example.jj_book.dto.AddressDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,4 +37,13 @@ public class Address extends BaseEntity{
         this.addressDetail = addressDetail;
         this.repAddYn = repAddYn;
     }
+
+    public void updateAddr(AddressDto addressDto){
+        this.addrCategory = addressDto.getAddrCategory();
+        this.postcode = addressDto.getPostcode();
+        this.address = addressDto.getAddress();
+        this.addressDetail = addressDto.getAddressDetail();
+        this.repAddYn = addressDto.getRepAddYn();
+    }
+
 }

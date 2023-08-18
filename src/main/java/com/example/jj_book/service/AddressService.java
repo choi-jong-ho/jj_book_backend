@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -44,5 +45,33 @@ public class AddressService {
 
 
         return new PageImpl<Address>(addrs, pageable, totalCount);
+    }
+
+    @Transactional(readOnly = true)
+    public AddressDto getAddrDtl(Long addrId){
+
+        Address address = addressRepository.findById(addrId)
+                .orElseThrow(EntityNotFoundException::new);
+        AddressDto addressDto = AddressDto.of(address);
+        return addressDto;
+    }
+
+    public Long updateAddr(AddressDto addressDto, String email) throws Exception{
+        //상품 수정
+        Address address = addressRepository.findById(addressDto.getId())
+                .orElseThrow(EntityNotFoundException::new);
+        address.updateAddr(addressDto);
+
+        if(address.getRepAddYn().equals("Y")){
+            addressRepository.updateRepYn(address.getId(), email);
+        }
+
+
+        return address.getId();
+    }
+
+    public void deleteAddr(AddressDto addressDto) throws Exception {
+        //상품 삭제
+        addressRepository.deleteById(addressDto.getId());
     }
 }

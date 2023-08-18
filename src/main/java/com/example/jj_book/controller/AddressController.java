@@ -53,4 +53,37 @@ public class AddressController {
 
         return list;
     }
+
+    @GetMapping(value = "/{addressId}")
+    public ResponseEntity addressDtl(@PathVariable("id") Long addressId){
+
+        AddressDto addressDto = addressService.getAddrDtl(addressId);
+
+        return ResponseEntity.ok(addressDto);
+    }
+
+    @PostMapping(value = "/{addressId}")
+    public ResponseEntity addrUpdate(@RequestBody @Valid AddressDto addressDto, BindingResult bindingResult, Principal principal){
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
+        }
+
+        try {
+            addressService.updateAddr(addressDto, principal.getName());
+        } catch (Exception e){
+        }
+
+        return ResponseEntity.ok(addressDto);
+    }
+
+    @PostMapping(value = "/delete")
+    public ResponseEntity addrDelete(@RequestBody AddressDto addressDto){
+
+        try {
+            addressService.deleteAddr(addressDto);
+        } catch (Exception e){
+        }
+
+        return ResponseEntity.ok(addressDto);
+    }
 }
