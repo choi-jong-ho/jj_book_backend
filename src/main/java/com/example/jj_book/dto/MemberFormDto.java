@@ -24,12 +24,15 @@ public class MemberFormDto {
 
     private String useYn;
 
-    private String addrCategory; //우편변호
+    private String addrCategory; // 배송지
 
+    @NotBlank(message = "우편변호를 입력해주세요.")
     private String postcode; //우편변호
 
+    @NotBlank(message = "주소를 입력해주세요.")
     private String address; //주소
 
+    @NotBlank(message = "상세주소를 입력해주세요.")
     private String addressDetail; //상세주소
 
     private String repAddYn; //대표 주소 여부

@@ -59,10 +59,6 @@ public class ItemController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
 
-        System.out.println("itemImgFileList.size :" + itemImgFileList.size());
-        System.out.println("itemImgFileList.get(0).getOriginalFilename :" + itemImgFileList.get(0).getOriginalFilename());
-        System.out.println("itemImgFileList.get(1).getOriginalFilename :" + itemImgFileList.get(1).getOriginalFilename());
-
         try {
             itemService.updateItem(itemFormDto, itemImgFileList);
         } catch (Exception e){

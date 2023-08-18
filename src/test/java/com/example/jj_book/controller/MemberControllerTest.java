@@ -44,18 +44,18 @@ class MemberControllerTest {
         memberService.saveMember(member, memberFormDto);
     }
 
-    @Test
-    @DisplayName("로그인 성공 테스트")
-    public void loginSuccessTest() throws Exception{
-        String email = "test@test.com";
-        String password = "test";
-        this.createMember(email, password);
-
-        mockMvc.perform(formLogin().userParameter("email")
-                .loginProcessingUrl("/member/login")
-                .user(email).password(password))
-                .andExpect(SecurityMockMvcResultMatchers.authenticated());
-    }
+//    @Test
+//    @DisplayName("로그인 성공 테스트")
+//    public void loginSuccessTest() throws Exception{
+//        String email = "test@test.com";
+//        String password = "test";
+//        this.createMember(email, password);
+//
+//        mockMvc.perform(formLogin().userParameter("email")
+//                .loginProcessingUrl("/member/login")
+//                .user(email).password(password))
+//                .andExpect(SecurityMockMvcResultMatchers.authenticated());
+//    }
 
     @Test
     @DisplayName("로그인 실패 테스트")

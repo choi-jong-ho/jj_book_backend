@@ -73,14 +73,6 @@ public class ItemService {
                 .orElseThrow(EntityNotFoundException::new);
         item.updateItem(itemFormDto);
 
-        System.out.println("getItemNm" + itemFormDto.getItemNm());
-        System.out.println("getItemDetail" + itemFormDto.getItemDetail());
-        System.out.println("getItemSellStatus" + itemFormDto.getItemSellStatus());
-        System.out.println("getPrice" + itemFormDto.getPrice());
-        System.out.println("getStockNumber" + itemFormDto.getStockNumber());
-        System.out.println("getId" + itemFormDto.getId());
-
-
         List<Long> itemImgIds = itemFormDto.getItemImgIds();
 
         //이미지 등록
