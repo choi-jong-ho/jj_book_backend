@@ -75,4 +75,19 @@ public class CartService {
         return new PageImpl<CartDetailDto>(cartDetailDtoList, pageable, totalCount);
     }
 
+    public Long updateCart(CartDetailDto cartDetailDto) throws Exception{
+        //장바구니 수량 수정
+        CartItem cartItem = cartItemRepository.findById(cartDetailDto.getCartItemId())
+                .orElseThrow(EntityNotFoundException::new);
+        cartItem.updateCartItem(cartDetailDto);
+
+        return cartItem.getId();
+    }
+
+    public void deleteCart(Long id) throws Exception{
+
+        //장바구니 삭제
+        cartRepository.deleteById(id);
+    }
+
 }

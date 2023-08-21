@@ -62,6 +62,25 @@ public class CartController {
         return list;
     }
 
+    @PostMapping(value = "/update")
+    public ResponseEntity cartUpdate(@RequestBody CartDetailDto cartDetailDto){
 
+        try {
+            cartService.updateCart(cartDetailDto);
+        } catch (Exception e){
+        }
 
+        return ResponseEntity.ok(cartDetailDto);
+    }
+
+    @PostMapping(value = "/delete")
+    public ResponseEntity cartDelete(@RequestBody CartDetailDto cartDetailDto){
+
+        try {
+            cartService.deleteCart(cartDetailDto.getCartItemId());
+        } catch (Exception e){
+        }
+
+        return ResponseEntity.ok(cartDetailDto);
+    }
 }

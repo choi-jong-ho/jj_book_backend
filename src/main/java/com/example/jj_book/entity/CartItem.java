@@ -1,5 +1,6 @@
 package com.example.jj_book.entity;
 
+import com.example.jj_book.dto.CartDetailDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,4 +39,7 @@ public class CartItem extends BaseEntity {
         this.count += count;
     }
 
+    public void updateCartItem(CartDetailDto cartDetailDto){
+        this.count = cartDetailDto.getCount();
+    }
 }
