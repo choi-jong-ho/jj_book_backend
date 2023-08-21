@@ -57,15 +57,16 @@ public class AddressService {
     }
 
     public Long updateAddr(AddressDto addressDto, String email) throws Exception{
-        //상품 수정
+
+        //기본배송지여부 전체 N 업데이트
+        addressRepository.updateRepYn(email);
+
+        //배송지 수정
         Address address = addressRepository.findById(addressDto.getId())
                 .orElseThrow(EntityNotFoundException::new);
         address.updateAddr(addressDto);
 
-        if(address.getRepAddYn().equals("Y")){
-            addressRepository.updateRepYn(address.getId(), email);
-        }
-
+        addressRepository.save(address);
 
         return address.getId();
     }

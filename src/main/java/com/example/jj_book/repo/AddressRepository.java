@@ -16,7 +16,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     @Query("select count(o) from Address o where o.member.id = :id")
     Long countAddr(@Param("id") Long id);
 
-    @Query("update Address o set o.repAddYn = 'N' where o.id != :id and o.member.email = :email")
-    Address updateRepYn(@Param("id") Long id, @Param("email") String email);
+    @Query("update Address o set o.repAddYn = 'N' where o.member.email = :email")
+    Address updateRepYn(@Param("email") String email);
 
 }
