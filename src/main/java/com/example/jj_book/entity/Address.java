@@ -25,6 +25,7 @@ public class Address extends BaseEntity{
 
     private String addressDetail; //상세주소
 
+    @Column(name="rep_add_yn")
     private String repAddYn; //대표 주소 여부
 
     @ManyToOne(fetch = FetchType.LAZY)

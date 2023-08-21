@@ -58,8 +58,9 @@ public class AddressService {
 
     public Long updateAddr(AddressDto addressDto, String email) throws Exception{
 
+        Member member = memberRepository.findByEmail(email);
         //기본배송지여부 전체 N 업데이트
-        addressRepository.updateRepYn(email);
+        addressRepository.updateRepYn(member.getId());
 
         //배송지 수정
         Address address = addressRepository.findById(addressDto.getId())
