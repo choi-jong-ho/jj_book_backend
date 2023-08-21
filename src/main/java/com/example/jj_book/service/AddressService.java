@@ -71,7 +71,16 @@ public class AddressService {
     }
 
     public void deleteAddr(AddressDto addressDto) throws Exception {
-        //상품 삭제
-        addressRepository.deleteById(addressDto.getId());
+
+        Address address = addressRepository.findById(addressDto.getId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        if(address.getRepAddYn().equals("N")){
+            //주소 삭제
+            addressRepository.deleteById(addressDto.getId());
+        }else {
+            throw new Exception();
+        }
+
     }
 }

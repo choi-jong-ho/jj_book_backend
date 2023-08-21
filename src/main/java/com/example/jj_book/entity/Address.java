@@ -16,6 +16,7 @@ public class Address extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name="addr_category")
     private String addrCategory;
 
     private String postcode; //우편변호
