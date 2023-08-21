@@ -1,7 +1,6 @@
 package com.example.jj_book.entity;
 
 import com.example.jj_book.dto.MemberFormDto;
-import com.example.jj_book.repo.Role;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
