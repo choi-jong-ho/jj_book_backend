@@ -7,6 +7,7 @@ import com.example.jj_book.entity.PrincipalDetail;
 import com.example.jj_book.repo.AddressRepository;
 import com.example.jj_book.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,12 +48,12 @@ public class MemberService implements UserDetailsService {
             throw new UsernameNotFoundException(email);
         }
 
-//        return User.builder()
-//                .username(member.getEmail())
-//                .password(member.getPassword())
-//                .roles(member.getRole().toString())
-//                .build();
-        return new PrincipalDetail(member);
+        return User.builder()
+                .username(member.getEmail())
+                .password(member.getPassword())
+                .roles(member.getRole().toString())
+                .build();
+//        return new PrincipalDetail(member);
     }
 
     public Long deleteMemeber(MemberFormDto memberFormDto) throws Exception{
