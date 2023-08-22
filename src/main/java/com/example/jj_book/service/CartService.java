@@ -87,7 +87,7 @@ public class CartService {
     public void deleteCart(Long id) throws Exception{
 
         //장바구니 삭제
-        cartRepository.deleteById(id);
+        cartItemRepository.deleteById(id);
     }
 
 }
