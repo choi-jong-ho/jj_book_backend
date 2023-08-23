@@ -7,6 +7,7 @@ import com.example.jj_book.entity.Item;
 import com.example.jj_book.entity.ItemImg;
 import com.example.jj_book.repo.ItemImgRepository;
 import com.example.jj_book.repo.ItemRepository;
+import com.example.jj_book.repo.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,8 @@ public class ItemService {
     private final ItemImgService itemImgService;
 
     private final ItemImgRepository itemImgRepository;
+
+    private final OrderRepository orderRepository;
 
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception{
 
@@ -64,6 +67,9 @@ public class ItemService {
                 .orElseThrow(EntityNotFoundException::new);
         ItemFormDto itemFormDto = ItemFormDto.of(item);
         itemFormDto.setItemImgDtoList(itemImgDtoList);
+
+        orderRepository.findById(itemId);
+
         return itemFormDto;
     }
 
