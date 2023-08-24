@@ -29,9 +29,8 @@ public class ReviewItem extends BaseEntity {
 
     private int rating; //별점
 
-    public static ReviewItem createReviewItem(Review review, Item item, ReviewFormDto reviewFormDto){
+    public static ReviewItem createReviewItem(Item item, ReviewFormDto reviewFormDto){
         ReviewItem reviewItem = new ReviewItem();
-        reviewItem.setReview(review);
         reviewItem.setItem(item);
         reviewItem.setContents(reviewFormDto.getContents());
         reviewItem.setRating(reviewFormDto.getRating());

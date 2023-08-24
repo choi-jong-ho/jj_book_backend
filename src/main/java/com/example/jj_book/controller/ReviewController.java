@@ -1,20 +1,23 @@
 package com.example.jj_book.controller;
 
 import com.example.jj_book.dto.ReviewFormDto;
+import com.example.jj_book.dto.ReviewHistDto;
 import com.example.jj_book.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/review")
@@ -40,5 +43,18 @@ public class ReviewController {
         }
 
         return ResponseEntity.ok(reviewFormDto);
+    }
+
+    //구매 이력 조회
+    @GetMapping(value = {"/list", "/list/{page}"})
+    public List<Page> reviewHist(@PathVariable("page") Optional<Integer> page, Principal principal){
+
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<ReviewHistDto> reviewHistDtoList = reviewService.getReviewList(principal.getName(), pageable);
+
+        List<Page> list = new ArrayList<>();
+        list.add(reviewHistDtoList);
+
+        return list;
     }
 }
