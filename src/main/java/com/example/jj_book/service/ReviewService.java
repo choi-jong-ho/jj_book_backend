@@ -70,8 +70,13 @@ public class ReviewService {
             List<ReviewItem> reviewItemList = review.getReviewItemList();
             for(ReviewItem reviewItem : reviewItemList){
                 ReviewImg reviewImg = reviewImgRepository.findByReviewId(review.getId());
-                ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem, reviewImg.getImgUrl());
-                reviewHistDto.addReviewItemDto(reviewItemDto);
+                if (reviewImg.getImgUrl() != null){
+                    ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem, reviewImg.getImgUrl());
+                    reviewHistDto.addReviewItemDto(reviewItemDto);
+                }else{
+                    ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem);
+                    reviewHistDto.addReviewItemDto(reviewItemDto);
+                }
             }
 
             reviewHistDtos.add(reviewHistDto);

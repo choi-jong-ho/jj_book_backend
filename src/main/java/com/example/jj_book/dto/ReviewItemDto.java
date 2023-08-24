@@ -17,4 +17,9 @@ public class ReviewItemDto {
         this.contents = reviewItem.getContents();
         this.imgUrl = imgUrl;
     }
+
+    public ReviewItemDto(ReviewItem reviewItem) {
+        this.rating = reviewItem.getRating();
+        this.contents = reviewItem.getContents();
+    }
 }
