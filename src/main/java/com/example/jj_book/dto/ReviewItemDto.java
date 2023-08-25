@@ -8,17 +8,20 @@ import lombok.Setter;
 @Setter
 public class ReviewItemDto {
 
+    private String itemNm;
     private int rating; //리뷰별점
     private String contents; //리뷰내용
     private String imgUrl; //리뷰 이미지 경로
 
     public ReviewItemDto(ReviewItem reviewItem, String imgUrl) {
+        this.itemNm = reviewItem.getItem().getItemNm();
         this.rating = reviewItem.getRating();
         this.contents = reviewItem.getContents();
         this.imgUrl = imgUrl;
     }
 
     public ReviewItemDto(ReviewItem reviewItem) {
+        this.itemNm = reviewItem.getItem().getItemNm();
         this.rating = reviewItem.getRating();
         this.contents = reviewItem.getContents();
     }
