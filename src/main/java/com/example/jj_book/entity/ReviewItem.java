@@ -27,7 +27,7 @@ public class ReviewItem extends BaseEntity {
 
     private String contents; // 리뷰 내용
 
-    private int rating; //별점
+    private Long rating; //별점
 
     public static ReviewItem createReviewItem(Item item, ReviewFormDto reviewFormDto){
         ReviewItem reviewItem = new ReviewItem();

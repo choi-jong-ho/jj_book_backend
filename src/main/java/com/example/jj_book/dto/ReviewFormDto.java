@@ -18,7 +18,7 @@ public class ReviewFormDto {
     private String contents;
 
     @NotNull(message = "별점은 필수 입력 값입니다.")
-    private Integer rating;
+    private Long rating;
 
     private List<ReviewImgDto> reviewImgDtoList = new ArrayList<>();
 

@@ -2,6 +2,7 @@ package com.example.jj_book.controller;
 
 import com.example.jj_book.dto.ReviewFormDto;
 import com.example.jj_book.dto.ReviewHistDto;
+import com.example.jj_book.dto.ReviewItemDto;
 import com.example.jj_book.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,7 +46,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewFormDto);
     }
 
-    //구매 이력 조회
+    //리뷰 이력 조회
     @GetMapping(value = {"/list", "/list/{page}"})
     public List<Page> reviewHist(@PathVariable("page") Optional<Integer> page, Principal principal){
 
@@ -54,6 +55,18 @@ public class ReviewController {
 
         List<Page> list = new ArrayList<>();
         list.add(reviewHistDtoList);
+
+        return list;
+    }
+
+    @GetMapping(value = {"/listAll", "/list/{page}"})
+    public List<Page> reviewList(ReviewHistDto reviewHistDto, @PathVariable("page") Optional<Integer> page, Principal principal){
+
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
+        Page<ReviewItemDto> reviewItemDtoList = reviewService.getReviewAllList(reviewHistDto, pageable);
+
+        List<Page> list = new ArrayList<>();
+        list.add(reviewItemDtoList);
 
         return list;
     }

@@ -16,7 +16,7 @@ public class ReviewHistDto {
         this.reviewId = review.getId();
         this.reviewDate = review.getReviewDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
-
+    private Long itemId;
     private Long reviewId; //리뷰아이디
     private String reviewDate; //리뷰날짜
 

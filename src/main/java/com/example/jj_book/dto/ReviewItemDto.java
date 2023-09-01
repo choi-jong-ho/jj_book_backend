@@ -9,7 +9,7 @@ import lombok.Setter;
 public class ReviewItemDto {
 
     private String itemNm;
-    private int rating; //리뷰별점
+    private Long rating; //리뷰별점
     private String contents; //리뷰내용
     private String imgUrl; //리뷰 이미지 경로
 

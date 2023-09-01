@@ -70,7 +70,7 @@ public class ReviewService {
             List<ReviewItem> reviewItemList = review.getReviewItemList();
             for(ReviewItem reviewItem : reviewItemList){
                 ReviewImg reviewImg = reviewImgRepository.findByReviewId(review.getId());
-                if (reviewImg.getImgUrl() != null){
+                if(reviewImg != null){
                     ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem, reviewImg.getImgUrl());
                     reviewHistDto.addReviewItemDto(reviewItemDto);
                 }else{
@@ -83,5 +83,21 @@ public class ReviewService {
         }
 
         return new PageImpl<ReviewHistDto>(reviewHistDtos, pageable, totalCount);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ReviewItemDto> getReviewAllList(ReviewHistDto reviewHistDto, Pageable pageable){
+
+        List<ReviewItem> reviewItems = reviewItemRepository.findReviewAllList(reviewHistDto.getItemId(), pageable);
+        Long totalCount = reviewItemRepository.countAllReview(reviewHistDto.getItemId());
+
+        List<ReviewItemDto> reviewItemDtoList = new ArrayList<>();
+
+        for(ReviewItem reviewItem : reviewItems) {
+            ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem);
+            reviewItemDtoList.add(reviewItemDto);
+        }
+
+        return new PageImpl<ReviewItemDto>(reviewItemDtoList, pageable, totalCount);
     }
 }
