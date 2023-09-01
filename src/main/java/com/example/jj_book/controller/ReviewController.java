@@ -59,7 +59,7 @@ public class ReviewController {
         return list;
     }
 
-    @GetMapping(value = {"/listAll", "/list/{page}"})
+    @GetMapping(value = {"/listAll", "/listAll/{page}"})
     public List<Page> reviewList(ReviewFormDto reviewFormDto, @PathVariable("page") Optional<Integer> page, Principal principal){
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 10);
