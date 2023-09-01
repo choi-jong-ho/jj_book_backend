@@ -86,10 +86,10 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ReviewItemDto> getReviewAllList(ReviewHistDto reviewHistDto, Pageable pageable){
+    public Page<ReviewItemDto> getReviewAllList(Long itemId, Pageable pageable){
 
-        List<ReviewItem> reviewItems = reviewItemRepository.findReviewAllList(reviewHistDto.getItemId(), pageable);
-        Long totalCount = reviewItemRepository.countAllReview(reviewHistDto.getItemId());
+        List<ReviewItem> reviewItems = reviewItemRepository.findReviewAllList(itemId, pageable);
+        Long totalCount = reviewItemRepository.countAllReview(itemId);
 
         List<ReviewItemDto> reviewItemDtoList = new ArrayList<>();
 

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class ReviewItemDto {
 
+    private Long itemId;
     private String itemNm;
     private Long rating; //리뷰별점
     private String contents; //리뷰내용
@@ -24,5 +25,6 @@ public class ReviewItemDto {
         this.itemNm = reviewItem.getItem().getItemNm();
         this.rating = reviewItem.getRating();
         this.contents = reviewItem.getContents();
+        this.itemId = reviewItem.getItem().getId();
     }
 }
