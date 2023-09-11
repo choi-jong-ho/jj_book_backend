@@ -3,7 +3,6 @@ package com.example.jj_book.service;
 import com.example.jj_book.dto.MemberFormDto;
 import com.example.jj_book.entity.Address;
 import com.example.jj_book.entity.Member;
-import com.example.jj_book.entity.PrincipalDetail;
 import com.example.jj_book.repo.AddressRepository;
 import com.example.jj_book.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +52,6 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().toString())
                 .build();
-//        return new PrincipalDetail(member);
     }
 
     public Long deleteMemeber(MemberFormDto memberFormDto) throws Exception{
@@ -68,6 +66,17 @@ public class MemberService implements UserDetailsService {
         member.deleteMember(memberFormDto);
 
         return member.getId();
+    }
+
+    public Member getMember(String email) throws Exception{
+
+        Member member = memberRepository.findByEmail(email);
+
+        if (member == null){
+            throw new UsernameNotFoundException(email);
+        }
+
+        return member;
     }
 
 }
