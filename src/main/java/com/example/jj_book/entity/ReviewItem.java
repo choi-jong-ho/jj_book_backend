@@ -36,4 +36,11 @@ public class ReviewItem extends BaseEntity {
         reviewItem.setRating(reviewFormDto.getRating());
         return reviewItem;
     }
+
+    public static ReviewItem updateReviewItem(ReviewFormDto reviewFormDto){
+        ReviewItem reviewItem = new ReviewItem();
+        reviewItem.setContents(reviewFormDto.getContents());
+        reviewItem.setRating(reviewFormDto.getRating());
+        return reviewItem;
+    }
 }

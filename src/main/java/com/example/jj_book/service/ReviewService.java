@@ -57,6 +57,29 @@ public class ReviewService {
         return review.getId();
     }
 
+    public Long updateReview(ReviewFormDto reviewFormDto, List<MultipartFile> reviewImgFileList, String email) throws Exception{
+
+        ReviewItem reviewItem = ReviewItem.updateReviewItem(reviewFormDto);
+        reviewItemRepository.save(reviewItem);
+
+//        if (reviewImgFileList.size() > 0) {
+//            //리뷰 이미지
+//            for(int i=0;i<reviewImgFileList.size();i++){
+//                ReviewImg reviewImg = new ReviewImg();
+//                reviewImg.setReview(review);
+//
+//                reviewImgService.saveReviewImg(reviewImg, reviewImgFileList.get(i));
+//            }
+//        }
+
+        return reviewItem.getId();
+    }
+
+    public void deleteReview(ReviewFormDto reviewFormDto) throws Exception{
+
+        reviewRepository.deleteById(reviewFormDto.getReviewId());
+    }
+
     @Transactional(readOnly = true)
     public Page<ReviewHistDto> getReviewList(String email, Pageable pageable){
 

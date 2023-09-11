@@ -46,6 +46,36 @@ public class ReviewController {
         return ResponseEntity.ok(reviewFormDto);
     }
 
+    @PostMapping(value = "/update")
+    public ResponseEntity reviewUpdate(@Valid ReviewFormDto reviewFormDto, BindingResult bindingResult,
+                                    @RequestPart(value = "reviewImgFile", required = false) List<MultipartFile> reviewImgFileList,
+                                    Principal principal) {
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
+        }
+
+        try {
+            reviewService.updateReview(reviewFormDto, reviewImgFileList, principal.getName());
+        } catch (Exception e) {
+
+        }
+
+        return ResponseEntity.ok(reviewFormDto);
+    }
+
+    @PostMapping(value = "/delete")
+    public ResponseEntity reviewDelete(@RequestBody ReviewFormDto reviewFormDto) {
+
+
+        try {
+            reviewService.deleteReview(reviewFormDto);
+        } catch (Exception e) {
+        }
+
+        return ResponseEntity.ok(reviewFormDto);
+    }
+
     //리뷰 이력 조회
     @GetMapping(value = {"/list", "/list/{page}"})
     public List<Page> reviewHist(@PathVariable("page") Optional<Integer> page, Principal principal){
