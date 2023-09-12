@@ -67,7 +67,7 @@ public class MemberController {
         memberFormDto.setEmail(principal.getName());
         Member member = null;
         try {
-            member = memberService.updateMember(memberFormDto, passwordEncoder);
+            member = memberService.updateMember(memberFormDto);
         } catch (Exception e) {
         }
 

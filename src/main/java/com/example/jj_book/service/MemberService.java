@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,7 +68,7 @@ public class MemberService implements UserDetailsService {
         return member.getId();
     }
 
-    public Member updateMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) throws Exception{
+    public Member updateMember(MemberFormDto memberFormDto) throws Exception{
 
         //정보 수정
         Member member = memberRepository.findByEmail(memberFormDto.getEmail());
@@ -78,7 +77,7 @@ public class MemberService implements UserDetailsService {
             throw new UsernameNotFoundException(memberFormDto.getEmail());
         }
 
-        member.updateMember(memberFormDto, passwordEncoder);
+        member.updateMember(memberFormDto);
 
         return member;
     }
