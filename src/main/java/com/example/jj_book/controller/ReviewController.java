@@ -46,7 +46,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewFormDto);
     }
 
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/update/{reviewId}")
     public ResponseEntity reviewUpdate(@Valid ReviewFormDto reviewFormDto, BindingResult bindingResult,
                                     @RequestPart(value = "reviewImgFile", required = false) List<MultipartFile> reviewImgFileList,
                                     Principal principal) {

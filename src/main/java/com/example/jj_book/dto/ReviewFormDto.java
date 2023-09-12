@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 public class ReviewFormDto {
 
-    private Long reviewId;
+    private Long id;
 
     private Long itemId;
 
