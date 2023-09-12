@@ -69,7 +69,7 @@ public class MemberService implements UserDetailsService {
         return member.getId();
     }
 
-    public Long updateMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) throws Exception{
+    public Member updateMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) throws Exception{
 
         //정보 수정
         Member member = memberRepository.findByEmail(memberFormDto.getEmail());
@@ -79,9 +79,8 @@ public class MemberService implements UserDetailsService {
         }
 
         member.updateMember(memberFormDto, passwordEncoder);
-        memberRepository.save(member);
 
-        return member.getId();
+        return member;
     }
 
     public Member getMember(String email) throws Exception{

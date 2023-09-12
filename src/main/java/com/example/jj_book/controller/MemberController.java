@@ -62,15 +62,16 @@ public class MemberController {
     }
 
     @PostMapping(value = "/update")
-    public ResponseEntity memberUpdate(@RequestBody MemberFormDto memberFormDto, Principal principal){
+    public ResponseEntity memberUpdate(@RequestBody MemberFormDto memberFormDto, Principal principal) {
 
         memberFormDto.setEmail(principal.getName());
+        Member member = null;
         try {
-        memberService.updateMember(memberFormDto, passwordEncoder);
+            member = memberService.updateMember(memberFormDto, passwordEncoder);
         } catch (Exception e) {
         }
 
-        return ResponseEntity.ok(memberFormDto);
+        return ResponseEntity.ok(member);
     }
 
     @GetMapping("/info")

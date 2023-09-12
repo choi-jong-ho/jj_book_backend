@@ -52,13 +52,10 @@ public class Member extends BaseEntity {
         return member;
     }
 
-    public Member updateMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
-        Member member = new Member();
-        member.setPhone(memberFormDto.getPhone());
+    public void updateMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
+        this.phone = memberFormDto.getPhone();
         String password = passwordEncoder.encode(memberFormDto.getPassword());
-        member.setPassword(password);
-
-        return member;
+        this.password = password;
     }
 
     public void deleteMember(MemberFormDto memberFormDto){
