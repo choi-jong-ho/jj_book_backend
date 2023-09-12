@@ -79,6 +79,7 @@ public class MemberService implements UserDetailsService {
         }
 
         member.updateMember(memberFormDto, passwordEncoder);
+        memberRepository.save(member);
 
         return member.getId();
     }
