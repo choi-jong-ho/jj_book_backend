@@ -78,7 +78,7 @@ public class ReviewService {
 
     public void deleteReview(ReviewFormDto reviewFormDto) throws Exception{
 
-        reviewRepository.deleteById(reviewFormDto.getReviewId());
+        reviewRepository.deleteById(reviewFormDto.getId());
     }
 
     @Transactional(readOnly = true)
