@@ -59,8 +59,7 @@ public class ReviewService {
 
     public Long updateReview(ReviewFormDto reviewFormDto, List<MultipartFile> reviewImgFileList, String email) throws Exception{
 
-        ReviewItem reviewItem = reviewItemRepository.findById(reviewFormDto.getReviewId())
-                .orElseThrow(EntityNotFoundException::new);
+        ReviewItem reviewItem = reviewItemRepository.findByReviewId(reviewFormDto.getId());
 
         reviewItem.updateReviewItem(reviewFormDto);
 
