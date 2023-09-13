@@ -19,6 +19,6 @@ public interface ReviewItemRepository extends JpaRepository<ReviewItem, Long> {
     Long countAllReview(@Param("id") Long id);
 
     @Query("select r from ReviewItem r where r.review.id = :id")
-    ReviewItem findByReviewId(@Param("reviewId") Long id);
+    ReviewItem findByReviewId(@Param("id") Long id);
 
 }
