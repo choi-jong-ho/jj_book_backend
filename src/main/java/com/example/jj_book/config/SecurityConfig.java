@@ -39,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // 요청에 대한 사용권한 체크
                 .antMatchers("/member/login").permitAll()
                 .antMatchers("/member/signup").permitAll()
-                .anyRequest().authenticated() // 그외나머지 요청은 인증
+                .antMatchers("/member/**").authenticated()
+                .anyRequest().permitAll() // 그외나머지 요청은 인증
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
