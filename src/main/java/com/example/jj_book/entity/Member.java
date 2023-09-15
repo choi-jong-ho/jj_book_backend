@@ -1,13 +1,19 @@
 package com.example.jj_book.entity;
 
 import com.example.jj_book.dto.MemberFormDto;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "member")
@@ -15,7 +21,10 @@ import javax.persistence.*;
 @Setter
 @ToString
 @DynamicInsert
-public class Member extends BaseEntity {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Member extends BaseEntity implements UserDetails {
 
     @Id
     @Column(name = "member_id")
@@ -37,8 +46,12 @@ public class Member extends BaseEntity {
     @Column(name = "use_yn", columnDefinition = "char(1) default 'Y'")
     private String useYn;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();
@@ -47,7 +60,8 @@ public class Member extends BaseEntity {
         member.setPhone(memberFormDto.getPhone());
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
-        member.setRole(Role.USER);
+//        member.setRole(Role.USER);
+        member.setRoles(Collections.singletonList("USER"));
 
         return member;
     }
@@ -60,4 +74,35 @@ public class Member extends BaseEntity {
         this.useYn = memberFormDto.getUseYn();
     }
 
+    @Override   //사용자의 권한 목록 리턴
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

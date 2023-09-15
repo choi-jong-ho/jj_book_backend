@@ -2,9 +2,10 @@ package com.example.jj_book.controller;
 
 import com.example.jj_book.dto.MemberFormDto;
 import com.example.jj_book.entity.Member;
+import com.example.jj_book.jwt.JwtTokenProvider;
+import com.example.jj_book.repo.MemberRepository;
 import com.example.jj_book.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,9 +20,9 @@ import java.security.Principal;
 @RequestMapping("/member")
 public class MemberController {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final MemberRepository memberRepository;
     private final MemberService memberService;
 
     @PostMapping(value = "/signup")
@@ -35,6 +36,21 @@ public class MemberController {
         memberService.saveMember(member, memberFormDto);
 
         return ResponseEntity.ok(memberFormDto);
+    }
+
+    // 로그인
+    @PostMapping("/login")
+    public String login(@RequestBody MemberFormDto memberFormDto) {
+        Member member = memberRepository.findByEmail(memberFormDto.getEmail());
+
+        if(member == null){
+            throw new IllegalArgumentException("가입되지 않은 아이디입니다.");
+        }
+
+        if (!passwordEncoder.matches(memberFormDto.getPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        return jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
     }
 
     @GetMapping(value = "/login/error")
