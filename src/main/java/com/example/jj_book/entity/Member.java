@@ -46,9 +46,6 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(name = "use_yn", columnDefinition = "char(1) default 'Y'")
     private String useYn;
 
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
-
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
@@ -60,8 +57,7 @@ public class Member extends BaseEntity implements UserDetails {
         member.setPhone(memberFormDto.getPhone());
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
-//        member.setRole(Role.USER);
-        member.setRoles(Collections.singletonList("USER"));
+        member.setRoles(Collections.singletonList("ROLE_USER"));
 
         return member;
     }

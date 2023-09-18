@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Collections;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +33,14 @@ public class MemberController {
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
 
-        Member member = Member.createMember(memberFormDto, passwordEncoder);
+//        Member member = Member.createMember(memberFormDto, passwordEncoder);
+        Member member = Member.builder()
+                .name(memberFormDto.getName())
+                .phone(memberFormDto.getPhone())
+                .email(memberFormDto.getEmail())
+                .password(passwordEncoder.encode(memberFormDto.getPassword()))
+                .roles(Collections.singletonList("ROLE_USER"))
+                .build();
         memberService.saveMember(member, memberFormDto);
 
         return ResponseEntity.ok(memberFormDto);
@@ -41,15 +49,13 @@ public class MemberController {
     // 로그인
     @PostMapping("/login")
     public String login(@RequestBody MemberFormDto memberFormDto) {
-        Member member = memberRepository.findByEmail(memberFormDto.getEmail());
-
-        if(member == null){
-            throw new IllegalArgumentException("가입되지 않은 아이디입니다.");
-        }
+        Member member = memberRepository.findMemberByEmail(memberFormDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 아이디입니다."));
 
         if (!passwordEncoder.matches(memberFormDto.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
+
         return jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
     }
 
@@ -98,5 +104,10 @@ public class MemberController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello";
     }
 }

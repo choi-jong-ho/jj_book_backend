@@ -3,10 +3,12 @@ package com.example.jj_book.service;
 import com.example.jj_book.dto.MemberFormDto;
 import com.example.jj_book.entity.Address;
 import com.example.jj_book.entity.Member;
+import com.example.jj_book.jwt.JwtTokenProvider;
 import com.example.jj_book.repo.AddressRepository;
 import com.example.jj_book.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final AddressRepository addressRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public void saveMember(Member member, MemberFormDto memberFormDto){
         validateDuplicateMember(member);
@@ -69,15 +73,14 @@ public class MemberService {
         return member;
     }
 
-    public Member getMember(String email) throws Exception{
+    public Member getMember(String email) throws Exception {
 
         Member member = memberRepository.findByEmail(email);
 
-        if (member == null){
+        if (member == null) {
             throw new UsernameNotFoundException(email);
         }
 
         return member;
     }
-
 }
