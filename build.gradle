@@ -45,6 +45,9 @@ dependencies {
     // JWT Token
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+    //GSon
+    implementation 'com.google.code.gson:gson:2.9.0'
+
     //MODEL MAPPER
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'
 

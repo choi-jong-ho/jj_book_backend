@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/member/login").permitAll()
                 .antMatchers("/member/signup").permitAll()
                 .antMatchers("/member/**").hasRole("USER")
+                .antMatchers("/admin/item/list").permitAll()
                 .antMatchers("/admin/item/**").hasRole("ADMIN")
                 .anyRequest().permitAll() // 그외나머지 요청은 인증
                 .and()
