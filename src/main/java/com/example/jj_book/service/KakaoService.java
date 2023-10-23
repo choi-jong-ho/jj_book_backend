@@ -105,7 +105,7 @@ public class KakaoService {
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            boolean hasEmail = properties.getAsJsonObject().get("has_email").getAsBoolean();
+            boolean hasEmail = kakao_account.getAsJsonObject().get("has_email").getAsBoolean();
             String email = "";
             if(hasEmail){
                 email = kakao_account.getAsJsonObject().get("email").getAsString();
