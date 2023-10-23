@@ -48,7 +48,7 @@ public class KakaoController {
                     .name(memberFormDto.getName())
                     .phone(memberFormDto.getPhone())
                     .email(memberFormDto.getEmail())
-                    .password(passwordEncoder.encode(memberFormDto.getPassword()))
+                    .password(passwordEncoder.encode("test"))
                     .roles(Collections.singletonList("ROLE_USER"))
                     .build();
             memberService.saveMember(newMember, memberFormDto);

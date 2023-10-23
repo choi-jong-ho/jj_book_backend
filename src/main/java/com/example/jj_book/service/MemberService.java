@@ -77,9 +77,9 @@ public class MemberService {
 
         Member member = memberRepository.findByEmail(email);
 
-        if (member == null) {
-            throw new UsernameNotFoundException(email);
-        }
+//        if (member == null) {
+//            throw new UsernameNotFoundException(email);
+//        }
 
         return member;
     }
