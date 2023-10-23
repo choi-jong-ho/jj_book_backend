@@ -2,6 +2,7 @@ package com.example.jj_book.controller;
 
 import com.example.jj_book.dto.MemberFormDto;
 import com.example.jj_book.entity.Member;
+import com.example.jj_book.jwt.JwtTokenProvider;
 import com.example.jj_book.service.KakaoService;
 import com.example.jj_book.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class KakaoController {
     private final PasswordEncoder passwordEncoder;
     private final KakaoService kakaoService;
     private final MemberService memberService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/login/kakao")
     public String kakaoCallBack(@RequestParam(value = "code", required = false) String code) throws Exception{
@@ -50,10 +52,10 @@ public class KakaoController {
                     .roles(Collections.singletonList("ROLE_USER"))
                     .build();
             memberService.saveMember(newMember, memberFormDto);
+
+            member = newMember;
         }
 
-        String url = "http://localhost:8080/";
-
-        return url;
+        return jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
     }
 }
