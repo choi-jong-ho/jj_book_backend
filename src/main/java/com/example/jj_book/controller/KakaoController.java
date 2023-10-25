@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class KakaoController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @GetMapping("/login/kakao")
-    public String kakaoCallBack(@RequestParam(value = "code", required = false) String code) throws Exception{
+    public Map<String, Object> kakaoCallBack(@RequestParam(value = "code", required = false) String code) throws Exception{
         System.out.println("#########" + code);
 
         String access_Token = kakaoService.getAccessToken(code);
@@ -56,6 +57,12 @@ public class KakaoController {
             member = newMember;
         }
 
-        return jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
+        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
+
+        HashMap<String, Object> token = new HashMap<>();
+        token.put("jwtToken" , jwtToken);
+        token.put("access_Token", access_Token);
+
+        return token;
     }
 }
