@@ -21,7 +21,7 @@ public class LikeController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/like/{reviewId}")
-    public ResponseEntity<String> addLike(@PathVariable Long recipeId, HttpServletRequest request) {
+    public ResponseEntity<String> addLike(@PathVariable Long reviewId, HttpServletRequest request) {
 
         String jwtToken = jwtTokenProvider.resolveToken(request);
         Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);
@@ -29,7 +29,7 @@ public class LikeController {
         boolean result = false;
 
         if (authentication.getName() != null) {
-            result = likeService.addLike(authentication.getName(), recipeId);
+            result = likeService.addLike(authentication.getName(), reviewId);
         }
 
         return result ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
