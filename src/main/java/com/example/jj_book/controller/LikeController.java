@@ -18,7 +18,7 @@ public class LikeController {
     private final LikeService likeService;
 
     @PostMapping("/like/{reviewId}")
-    public ResponseEntity<String> addLike(@PathVariable Long reviewId, Principal principal) {
+    public ResponseEntity addLike(@PathVariable Long reviewId, Principal principal) {
 
         boolean result = false;
 
@@ -26,6 +26,42 @@ public class LikeController {
             result = likeService.addLike(principal.getName(), reviewId);
         }
 
-        return result ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return result ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/like/cancel/{reviewId}")
+    public ResponseEntity cancelLike(@PathVariable Long reviewId, Principal principal) {
+
+        boolean result = false;
+
+        if (principal.getName() != null) {
+            result = likeService.cancelLike(principal.getName(), reviewId);
+        }
+
+        return result ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/notlike/{reviewId}")
+    public ResponseEntity addNotLike(@PathVariable Long reviewId, Principal principal) {
+
+        boolean result = false;
+
+        if (principal.getName() != null) {
+            result = likeService.addNotLike(principal.getName(), reviewId);
+        }
+
+        return result ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/notlike/cancel/{reviewId}")
+    public ResponseEntity cancelNotLike(@PathVariable Long reviewId, Principal principal) {
+
+        boolean result = false;
+
+        if (principal.getName() != null) {
+            result = likeService.cancelNotLike(principal.getName(), reviewId);
+        }
+
+        return result ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }
