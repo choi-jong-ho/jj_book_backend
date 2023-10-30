@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Table(name = "likes")
 @Entity
-public class Like {
+public class Like extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

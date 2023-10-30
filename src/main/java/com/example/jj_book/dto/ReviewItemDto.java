@@ -13,6 +13,7 @@ public class ReviewItemDto {
     private Long rating; //리뷰별점
     private String contents; //리뷰내용
     private String imgUrl; //리뷰 이미지 경로
+    private String email;
 
     public ReviewItemDto(ReviewItem reviewItem, String imgUrl) {
         this.itemNm = reviewItem.getItem().getItemNm();
@@ -26,5 +27,6 @@ public class ReviewItemDto {
         this.rating = reviewItem.getRating();
         this.contents = reviewItem.getContents();
         this.itemId = reviewItem.getItem().getId();
+        this.email = reviewItem.getReview().getMember().getEmail();
     }
 }
