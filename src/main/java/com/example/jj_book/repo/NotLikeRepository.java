@@ -16,4 +16,7 @@ public interface NotLikeRepository extends JpaRepository<NotLike, Long> {
 
     @Query("select l from NotLike l where l.member.id = :memberId and l.review.id = :reviewId")
     NotLike findNotLike(@Param("memberId") Long memberId, @Param("reviewId")Long reviewId);
+
+    @Query("select count(*) from NotLike l where l.review.id = :reviewId")
+    Long notlikeCount(@Param("reviewId") Long reviewId);
 }

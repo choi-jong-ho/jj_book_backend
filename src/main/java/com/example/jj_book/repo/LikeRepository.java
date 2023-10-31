@@ -16,4 +16,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     @Query("select l from Like l where l.member.id = :memberId and l.review.id = :reviewId")
     Like findLike(@Param("memberId") Long memberId, @Param("reviewId")Long reviewId);
+
+    @Query("select count(*) from Like l where l.review.id = :reviewId")
+    Long likeCount(@Param("reviewId") Long reviewId);
 }

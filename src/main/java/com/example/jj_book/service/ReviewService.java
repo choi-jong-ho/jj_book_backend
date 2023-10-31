@@ -21,16 +21,13 @@ import java.util.List;
 public class ReviewService {
 
     private final MemberRepository memberRepository;
-
     private final ItemRepository itemRepository;
-
     private final ReviewRepository reviewRepository;
-
     private final ReviewItemRepository reviewItemRepository;
-
     private final ReviewImgRepository reviewImgRepository;
-
     private final ReviewImgService reviewImgService;
+    private final LikeRepository likeRepository;
+    private final NotLikeRepository notLikeRepository;
 
     public Long saveReview(ReviewFormDto reviewFormDto, List<MultipartFile> reviewImgFileList, String email) throws Exception{
 
@@ -98,7 +95,9 @@ public class ReviewService {
                     ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem, reviewImg.getImgUrl());
                     reviewHistDto.addReviewItemDto(reviewItemDto);
                 }else{
-                    ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem);
+                    Long likeCount = likeRepository.likeCount(reviewItem.getReview().getId());
+                    Long notLikeCount = notLikeRepository.notlikeCount(reviewItem.getReview().getId());
+                    ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem, likeCount, notLikeCount);
                     reviewHistDto.addReviewItemDto(reviewItemDto);
                 }
             }
@@ -118,7 +117,9 @@ public class ReviewService {
         List<ReviewItemDto> reviewItemDtoList = new ArrayList<>();
 
         for(ReviewItem reviewItem : reviewItems) {
-            ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem);
+            Long likeCount = likeRepository.likeCount(reviewItem.getReview().getId());
+            Long notLikeCount = notLikeRepository.notlikeCount(reviewItem.getReview().getId());
+            ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem, likeCount, notLikeCount);
             reviewItemDtoList.add(reviewItemDto);
         }
 

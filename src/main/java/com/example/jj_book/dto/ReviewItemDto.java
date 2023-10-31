@@ -15,6 +15,8 @@ public class ReviewItemDto {
     private String contents; //리뷰내용
     private String imgUrl; //리뷰 이미지 경로
     private String email;
+    private Long likeCount;
+    private Long notLikeCount;
 
     public ReviewItemDto(ReviewItem reviewItem, String imgUrl) {
         this.reviewId = reviewItem.getReview().getId();
@@ -25,12 +27,14 @@ public class ReviewItemDto {
         this.email = reviewItem.getReview().getMember().getEmail();
     }
 
-    public ReviewItemDto(ReviewItem reviewItem) {
+    public ReviewItemDto(ReviewItem reviewItem, Long likeCount, Long notLikeCount) {
         this.reviewId = reviewItem.getReview().getId();
         this.itemNm = reviewItem.getItem().getItemNm();
         this.rating = reviewItem.getRating();
         this.contents = reviewItem.getContents();
         this.itemId = reviewItem.getItem().getId();
         this.email = reviewItem.getReview().getMember().getEmail();
+        this.likeCount = likeCount;
+        this.notLikeCount = notLikeCount;
     }
 }
