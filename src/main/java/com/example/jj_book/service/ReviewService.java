@@ -109,6 +109,30 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
+    public Page<ReviewItemDto> getReviewAllList(Long itemId, Pageable pageable, String email){
+
+        List<ReviewItem> reviewItems = reviewItemRepository.findReviewAllList(itemId, pageable);
+        Long totalCount = reviewItemRepository.countAllReview(itemId);
+        Member member = memberRepository.findByEmail(email);
+        boolean likeYn = false;
+
+        List<ReviewItemDto> reviewItemDtoList = new ArrayList<>();
+
+        for(ReviewItem reviewItem : reviewItems) {
+            Like like = likeRepository.findLike(member.getId(), reviewItem.getReview().getId());
+            if (like != null) {
+                likeYn = true;
+            }
+            Long likeCount = likeRepository.likeCount(reviewItem.getReview().getId());
+            Long notLikeCount = notLikeRepository.notlikeCount(reviewItem.getReview().getId());
+            ReviewItemDto reviewItemDto = new ReviewItemDto(reviewItem, likeCount, notLikeCount, likeYn);
+            reviewItemDtoList.add(reviewItemDto);
+        }
+
+        return new PageImpl<ReviewItemDto>(reviewItemDtoList, pageable, totalCount);
+    }
+
+    @Transactional(readOnly = true)
     public Page<ReviewItemDto> getReviewAllList(Long itemId, Pageable pageable){
 
         List<ReviewItem> reviewItems = reviewItemRepository.findReviewAllList(itemId, pageable);

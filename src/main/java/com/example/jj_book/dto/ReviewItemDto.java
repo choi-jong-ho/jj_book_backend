@@ -17,6 +17,7 @@ public class ReviewItemDto {
     private String email;
     private Long likeCount;
     private Long notLikeCount;
+    private boolean likeYn;
 
     public ReviewItemDto(ReviewItem reviewItem, String imgUrl) {
         this.reviewId = reviewItem.getReview().getId();
@@ -36,5 +37,17 @@ public class ReviewItemDto {
         this.email = reviewItem.getReview().getMember().getEmail();
         this.likeCount = likeCount;
         this.notLikeCount = notLikeCount;
+    }
+
+    public ReviewItemDto(ReviewItem reviewItem, Long likeCount, Long notLikeCount, boolean likeYn) {
+        this.reviewId = reviewItem.getReview().getId();
+        this.itemNm = reviewItem.getItem().getItemNm();
+        this.rating = reviewItem.getRating();
+        this.contents = reviewItem.getContents();
+        this.itemId = reviewItem.getItem().getId();
+        this.email = reviewItem.getReview().getMember().getEmail();
+        this.likeCount = likeCount;
+        this.notLikeCount = notLikeCount;
+        this.likeYn = likeYn;
     }
 }

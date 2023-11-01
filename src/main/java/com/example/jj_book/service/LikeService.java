@@ -43,11 +43,12 @@ public class LikeService {
     public boolean cancelLike(String email, Long reviewId) {
         Member member = memberRepository.findByEmail(email);
 
-        Like like = likeRepository.findLike(member.getId(), reviewId);
-
-        likeRepository.delete(like);
-
-        return true;
+        if (member != null){
+            Like like = likeRepository.findLike(member.getId(), reviewId);
+            likeRepository.delete(like);
+            return true;
+        }
+        return false;
     }
 
     public boolean addNotLike(String email, Long reviewId) {
@@ -72,10 +73,11 @@ public class LikeService {
     public boolean cancelNotLike(String email, Long reviewId) {
         Member member = memberRepository.findByEmail(email);
 
-        NotLike notLike = notLikeRepository.findNotLike(member.getId(), reviewId);
-
-        notLikeRepository.delete(notLike);
-
-        return true;
+        if (member != null) {
+            NotLike notLike = notLikeRepository.findNotLike(member.getId(), reviewId);
+            notLikeRepository.delete(notLike);
+            return true;
+        }
+        return false;
     }
 }
